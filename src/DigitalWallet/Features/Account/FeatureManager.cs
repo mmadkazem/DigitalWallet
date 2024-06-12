@@ -1,4 +1,6 @@
-﻿namespace DigitalWallet.Features.Account;
+﻿using DigitalWallet.Features.Account.LoginByRefreshToken;
+
+namespace DigitalWallet.Features.Account;
 
 public abstract class FeatureManager
 {
@@ -13,6 +15,7 @@ public abstract class FeatureManager
             service.AddScoped<IUserFacadeService, UserFacadeService>();
 
             // DI Services
+            service.AddScoped<ILoginByRefreshTokenQueryHandler, LoginByRefreshTokenQueryHandler>();
             service.AddScoped<ICreateUserCommandHandler, CreateUserCommandHandler>();
             service.AddScoped<ILoginUserQueryHandler, LoginUserQueryHandler>();
 

@@ -1,3 +1,5 @@
+using DigitalWallet.Features.Account.LoginByRefreshToken;
+
 namespace DigitalWallet.Features.Account.Common;
 
 
@@ -5,12 +7,14 @@ public interface IUserFacadeService
 {
     ICreateUserCommandHandler CreateUser { get; }
     ILoginUserQueryHandler LoginUser { get; }
+    ILoginByRefreshTokenQueryHandler LoginByRefreshToken { get; }
 }
 
 public class UserFacadeService
     (AppDbContext context,
     ICreateUserCommandHandler createUser,
-    ILoginUserQueryHandler loginUser)
+    ILoginUserQueryHandler loginUser,
+    ILoginByRefreshTokenQueryHandler loginByRefresh)
 : IUserFacadeService
 {
     private readonly AppDbContext _context = context;
@@ -21,4 +25,8 @@ public class UserFacadeService
     private readonly ILoginUserQueryHandler _loginUser = loginUser;
     public ILoginUserQueryHandler LoginUser
         => _loginUser;
+
+    private readonly ILoginByRefreshTokenQueryHandler _loginByRefresh = loginByRefresh;
+    public ILoginByRefreshTokenQueryHandler LoginByRefreshToken
+        => _loginByRefresh;
 }

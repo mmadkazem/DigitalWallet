@@ -27,6 +27,9 @@ internal static class IServiceCollectionExtensions
         services.AddOptions<TokenOption>()
                 .Bind(configuration.GetSection("BearerTokens"));
 
+        services.AddOptions<RefreshTokenOption>()
+                .Bind(configuration.GetSection("RefreshToken"));
+
         return services;
     }
     private static IServiceCollection ConfigureDbContexts(this IServiceCollection services, IConfiguration configuration)
@@ -83,6 +86,7 @@ internal static class IServiceCollectionExtensions
     public static IServiceCollection AddAuthenticationConfig(this IServiceCollection services, IConfiguration configuration)
     {
         var options = configuration.GetSection("BearerTokens");
+        var refreshOptions = configuration.GetSection("RefreshToken");
         services
             .AddAuthentication(options =>
             {
@@ -101,6 +105,22 @@ internal static class IServiceCollectionExtensions
                     ValidAudience = options["Audience"], // site that consumes the token
                     ValidateAudience = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options["Key"])),
+                    ValidateIssuerSigningKey = true, // verify signature to avoid tampering
+                    ValidateLifetime = true, // validate the expiration
+                    ClockSkew = TimeSpan.Zero // tolerance for the expiration date
+                };
+            })
+            .AddJwtBearer("RefreshScheme", cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = refreshOptions["Issuer"], // site that makes the token
+                    ValidateIssuer = true,
+                    ValidAudience = refreshOptions["Audience"], // site that consumes the token
+                    ValidateAudience = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(refreshOptions["Key"])),
                     ValidateIssuerSigningKey = true, // verify signature to avoid tampering
                     ValidateLifetime = true, // validate the expiration
                     ClockSkew = TimeSpan.Zero // tolerance for the expiration date
