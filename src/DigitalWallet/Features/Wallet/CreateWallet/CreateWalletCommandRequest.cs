@@ -1,7 +1,13 @@
 namespace DigitalWallet.Features.Wallet.CreateWallet;
 
 
-public record CreateWalletCommandRequest(Guid UserId, int Balance);
+public record CreateWalletCommandRequest(Guid UserId, decimal Balance);
+public record CreateWalletDTO(decimal Balance)
+{
+    public static implicit operator decimal(CreateWalletDTO model)
+        => model.Balance;
+}
+
 
 public interface ICreateWalletCommandHandler
 {

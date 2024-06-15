@@ -41,9 +41,7 @@ public class MoneyTransferCommandHandler(AppDbContext context) : IMoneyTransferC
             Amount = request.Amount,
             Description = request.Description,
             WalletSender = senderWallet,
-            WalletSenderId = senderWallet.Id,
             WalletReceipt = receiptWallet,
-            WalletReceiptId = receiptWallet.Id
         };
 
         _context.Transactions.Add(transaction);

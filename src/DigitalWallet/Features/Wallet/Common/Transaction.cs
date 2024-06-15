@@ -9,8 +9,8 @@ public class Transaction
 
     // Wallet Transaction
     public UserWallet WalletSender { get; set; }
-    public Guid WalletSenderId { get; set; }
+    // public Guid WalletSenderId { get; set; }
 
     public UserWallet WalletReceipt { get; set; }
-    public Guid WalletReceiptId { get; set; }
+    // public Guid WalletReceiptId { get; set; }
 }

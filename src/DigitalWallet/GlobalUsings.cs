@@ -1,4 +1,5 @@
 ﻿// built-in
+global using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.AspNetCore.Authorization;
 global using System.IdentityModel.Tokens.Jwt;

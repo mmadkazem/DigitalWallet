@@ -12,15 +12,15 @@ public class GetTransactionsQueryHandler(AppDbContext context) : IGetTransaction
         var responses = await _context.Transactions
                             .AsQueryable()
                             .AsNoTracking()
-                            .Where(t => t.WalletReceiptId == request.WalletId || t.WalletSenderId == request.WalletId)
+                            .Where(t => t.WalletReceipt.Id == request.WalletId || t.WalletSender.Id == request.WalletId)
                             .Select(t => new GetTransactionsQueryResponse
                             (
                                 t.Id,
                                 t.Amount,
                                 t.Description,
                                 t.PayDateOn,
-                                t.WalletSenderId,
-                                t.WalletReceiptId
+                                t.WalletSender.Id,
+                                t.WalletReceipt.Id
                             )).ToListAsync(cancellationToken);
         if (responses.Count == 0)
         {

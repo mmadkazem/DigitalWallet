@@ -10,12 +10,13 @@ public class Endpoint : ICarterModule
             .MapGroup(WalletFeatureManager.Prefix)
             .WithTags(WalletFeatureManager.EndpointTagName)
             .MapPost("/",
-            async ([FromBody] CreateWalletCommandRequest request, IWalletFacadeService _walletFacade, CancellationToken cancellationToken) =>
+            async (CreateWalletDTO model, IWalletFacadeService _walletFacade, HttpContext context, CancellationToken cancellationToken) =>
             {
-                await _walletFacade.CreateWallet.Handle(request, cancellationToken);
+                var userId = context.User.UserId();
+                await _walletFacade.CreateWallet.Handle(new(userId, model), cancellationToken);
                 return Results.Ok();
             })
-            .Validator<CreateWalletCommandRequest>()
+            .Validator<CreateWalletDTO>()
             .RequireAuthorization();
     }
 }

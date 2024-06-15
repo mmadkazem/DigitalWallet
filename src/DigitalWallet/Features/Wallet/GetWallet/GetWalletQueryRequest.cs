@@ -4,5 +4,5 @@ namespace DigitalWallet.Features.Wallet.GetWallet;
 
 
 public record GetWalletQueryRequest(Guid Id);
-public record GetWalletQueryResponse(Guid Id, int Balance, int BlockBalance, DateTime CreatedOn);
+public record GetWalletQueryResponse(Guid Id, decimal Balance, decimal BlockBalance, DateTime CreatedOn);
 

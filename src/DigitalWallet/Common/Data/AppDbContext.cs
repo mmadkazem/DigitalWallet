@@ -17,11 +17,29 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithOne(w => w.UserWallet)
             .HasForeignKey<User>(u => u.UserWalletId);
 
+        var converter = new ValueConverter<decimal, double>
+        (
+            v => (double)v,
+            v => (decimal)v
+        );
+
+        modelBuilder.Entity<UserWallet>()
+            .Property(w => w.Balance)
+            .HasConversion(converter);
+
+        modelBuilder.Entity<UserWallet>()
+            .Property(w => w.BlockBalance)
+            .HasConversion(converter);
+
         modelBuilder.Entity<Transaction>()
             .HasOne(t => t.WalletReceipt);
+            // .WithMany()
+            // .HasForeignKey(t => t.WalletReceiptId);
 
         modelBuilder.Entity<Transaction>()
             .HasOne(t => t.WalletSender);
+            // .WithMany()
+            // .HasForeignKey(t => t.WalletSenderId);
 
         // modelBuilder.Entity<User>().Property(u => u.UserWalletId).IsRequired(false);
         // modelBuilder.Entity<UserWallet>().Property(u => u.UserId).IsRequired(false);
